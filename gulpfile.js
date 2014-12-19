@@ -67,7 +67,7 @@ gulp.task('imagemin', function () {
 
 // ect
 gulp.task('ect', function(){
-  gulp.src('./src/templetes/*.ect')
+  gulp.src('./src/templates/*.ect')
       .pipe(ect())
       .pipe(gulp.dest('./dist/'));
 });
