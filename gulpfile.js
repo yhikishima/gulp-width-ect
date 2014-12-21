@@ -11,6 +11,7 @@ var runSequence = require('run-sequence');
 var clean = require('gulp-clean');
 var ect = require('gulp-ect');
 var plumber = require('gulp-plumber');
+var spritesmith = require("gulp.spritesmith");
 
 // ディレクトリ設定
 var dir = {
@@ -72,12 +73,31 @@ gulp.task('imagemin', function () {
 gulp.task('compass',function(){
     gulp.src( [dir.src + '/{,**/}*.scss'] )
         .pipe(plumber())
+        .pipe(imagemin())
         .pipe(compass({ //コンパイルする処理
             config_file : 'config.rb',
             comments : false,
             css : dir.dist + '/css/',
             sass: dir.src + '/scss/'
         }));
+});
+
+//sprite作成
+gulp.task('sprite', function() {
+    var spriteData = gulp.src(dir.src + '/img/sprites/*.png')
+        .pipe(plumber())
+        .pipe(spritesmith({
+            imgName: 'sprite.png',
+            cssName: '_sprite.scss',
+            imgPath: '../img/sprite.png',
+            cssFormat: 'scss',
+            cssVarMap: function (sprite) {
+                sprite.name = 'sprite-' + sprite.name; //VarMap(生成されるScssにいろいろな変数の一覧を生成)
+            }
+    }));
+
+    spriteData.pipe(gulp.dest(dir.dist+'/img'));
+    spriteData.css.pipe(gulp.dest(dir.src+'/scss/var'));
 });
 
 // ect
@@ -106,8 +126,9 @@ gulp.task('watch', function() {
 
 // タスクの登録
 // 開発用
-gulp.task('default', [
+gulp.task('serve', [
     'connect',
     'clean-dist',
+    'sprite',
     'watch'
 ]);
