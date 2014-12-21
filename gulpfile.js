@@ -1,5 +1,6 @@
 // パッケージをインポートする
 var gulp = require('gulp');
+var fs = require('fs');
 var plugin = require('gulp-load-plugins')();
 
 var compass = require('gulp-compass');
@@ -16,6 +17,10 @@ var spritesmith = require("gulp.spritesmith");
 var dir = {
   src: 'src',
   dist: 'dist'
+};
+
+var pass = {
+  data: dir.src + '/data'
 };
 
 // 簡易サーバー
@@ -102,10 +107,15 @@ gulp.task('sprite', function() {
 
 // ect
 gulp.task('ect', function(){
+  var json = JSON.parse(fs.readFileSync(pass.data + '/data.json'));
+
   gulp.src(dir.src + '/templates/*.ect')
   .pipe(ect({
     data: function (file, cb) {
-      cb({foo: "bar"+file});
+      cb({
+        filename: file,
+        data: json
+      });
     }}))
   .pipe(gulp.dest(dir.dist));
 });
