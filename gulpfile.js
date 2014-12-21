@@ -13,6 +13,7 @@ var clean = require('gulp-clean');
 var ect = require('gulp-ect');
 var plumber = require('gulp-plumber');
 var spritesmith = require("gulp.spritesmith");
+var typescript = require('gulp-tsc');
 
 var dir = {
   src: 'src',
@@ -105,6 +106,16 @@ gulp.task('sprite', function() {
   spriteData.css.pipe(gulp.dest(dir.src + '/scss/var'));
 });
 
+// typescript
+gulp.task('typescript', function(){
+  gulp.src([dir.src + '/ts/{,**/}*.ts'])
+    .pipe(plumber())
+    .pipe(typescript({
+      removeComments: true
+    }))
+    .pipe(gulp.dest(dir.dist + '/js/'));
+});
+
 // ect
 gulp.task('ect', function(){
   var json = JSON.parse(fs.readFileSync(pass.data + '/data.json'));
@@ -122,15 +133,18 @@ gulp.task('ect', function(){
 
 // ファイル更新監視
 gulp.task('watch', function() {
-  // ectの監視
+
   gulp.watch([
     dir.src + '/{,**/}*.ect' // 対象ファイル
   ],['ect']); // 実行タスク
 
-  // scssの監視
   gulp.watch([
     dir.src + '/{,**/}*.scss' // 対象ファイル
   ],['compass']); // 実行タスク（css 開発用）
+
+  gulp.watch([
+    dir.src + '/{,**/}*.ts' // 対象ファイル
+  ],['typescript']); // 実行タスク（css 開発用）
 
   gulp.watch([
       dir.dist + '/{,**/}*'
