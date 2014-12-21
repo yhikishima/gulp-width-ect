@@ -7,5 +7,4 @@ npm-debug.log
 IE8.Win7.For.MacVirtualBox.part1.sfx
 .DS_Store
 .sass-cache/
-assets/scss/var/_sprite.scss
-assets/layouts/partials/module/
+src/scss/var/_sprite.scss
