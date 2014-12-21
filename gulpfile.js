@@ -10,6 +10,7 @@ var pngquant = require('imagemin-pngquant');
 var runSequence = require('run-sequence');
 var clean = require('gulp-clean');
 var ect = require('gulp-ect');
+var plumber = require('gulp-plumber');
 
 // ディレクトリ設定
 var dir = {
@@ -27,8 +28,10 @@ gulp.task('connect', function() {
 });
 
 // 自動更新
-gulp.task('reload', function () {
-    return gulp.src(dir.src + '/{,**/}*.html')
+gulp.task("reload", function() {
+  gulp.src([
+        dir.dist + '/{,**/}*'
+    ])
     .pipe(connect.reload());
 });
 
@@ -65,6 +68,18 @@ gulp.task('imagemin', function () {
     .pipe(gulp.dest( dir.dist )); // 書き出し先
 });
 
+//Compassのタスク
+gulp.task('compass',function(){
+    gulp.src( [dir.src + '/{,**/}*.scss'] )
+        .pipe(plumber())
+        .pipe(compass({ //コンパイルする処理
+            config_file : 'config.rb',
+            comments : false,
+            css : dir.dist + '/css/',
+            sass: dir.src + '/scss/'
+        }));
+});
+
 // ect
 gulp.task('ect', function(){
   gulp.src('./src/templates/*.ect')
@@ -85,10 +100,8 @@ gulp.task('watch', function() {
     ],['compass']); // 実行タスク（css 開発用）
 
     gulp.watch([
-        dir.src + '/{,**/}*.html', // 対象ファイル
-        dir.src + '/{,**/}*.css',
-        dir.src + '/{,**/}*.js'
-    ],['reload']); // 実行タスク（scss ファイル以外が更新されたタイミングでブラウザを自動更新）
+        dir.dist + '/{,**/}*'
+    ], ["reload"]);
 });
 
 // タスクの登録
