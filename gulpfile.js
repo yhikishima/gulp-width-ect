@@ -43,11 +43,8 @@ gulp.task("reload", function() {
 
 // ファイルのコピー
 gulp.task('copy', function () {
-  return gulp.src([
-      dir.src + '/{,**/}*.html', // 対象ファイル
-      dir.src + '/{,**/}*.js'
-    ])
-    .pipe(gulp.dest( dir.dist ));
+  gulp.src(dir.src + '/img/**')
+    .pipe(gulp.dest( dir.dist + '/img/' ));
 });
 
 // 不要なファイルを削除する
@@ -98,7 +95,7 @@ gulp.task('sprite', function() {
     imgPath: '../img/sprite.png',
     cssFormat: 'scss',
     cssVarMap: function (sprite) {
-      sprite.name = 'sprite-' + sprite.name; //VarMap(生成されるScssにいろいろな変数の一覧を生成)
+      sprite.name = sprite.name; //VarMap(生成されるScssにいろいろな変数の一覧を生成)
   }
   }));
 
@@ -125,7 +122,8 @@ gulp.task('ect', function(){
     data: function (file, cb) {
       cb({
         filename: file,
-        data: json
+        data: json,
+        basepath: '/'
       });
     }}))
   .pipe(gulp.dest(dir.dist));
@@ -156,6 +154,7 @@ gulp.task('watch', function() {
 gulp.task('serve', [
   'connect',
   'clean-dist',
+  'copy',
   'sprite',
   'watch'
 ]);
