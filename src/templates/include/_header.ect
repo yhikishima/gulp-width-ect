@@ -1,0 +1,15 @@
+<%# ページ個別の設定 %>
+<%
+  file = @filename
+  split = file.split("/")
+  fileId = split[2]
+%>
+<%# /ページ個別の設定 %>
+
+<header class="ly-header">
+  <nav class="ly-headerNav">
+    <li class="<% if fileId is 'index': %>is-current<% end %>">
+      index
+    </li>
+  </nav>
+</header>
