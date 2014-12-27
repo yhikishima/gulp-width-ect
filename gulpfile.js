@@ -51,7 +51,7 @@ gulp.task('copy', function () {
 // distフォルダ内を一度全て削除する
 gulp.task('clean-dist', function () {
   gulp.src([
-    dir.dist + '*.**'
+    dir.dist + '/{,**/}*'
     ], {read: false} )
   .pipe(clean());
 });
@@ -153,8 +153,11 @@ gulp.task('watch', function() {
 // 開発用
 gulp.task('serve', [
   'connect',
-  'clean-dist',
   'copy',
   'sprite',
   'watch'
+]);
+
+gulp.task('clean', [
+  'clean-dist'
 ]);
