@@ -5,6 +5,7 @@ gulp-with-ect
 
 Installing packages
 ```
+npm install -g gulp
 npm install
 ```
 
