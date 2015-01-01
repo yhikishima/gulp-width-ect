@@ -14,6 +14,7 @@ var ect = require('gulp-ect');
 var plumber = require('gulp-plumber');
 var spritesmith = require("gulp.spritesmith");
 var typescript = require('gulp-tsc');
+var del = require('del');
 
 var dir = {
   src: 'src',
@@ -43,27 +44,22 @@ gulp.task("reload", function() {
 
 // ファイルのコピー
 gulp.task('copy', function () {
-  gulp.src(dir.src + '/img/**')
+  gulp.src([
+    '!' + dir.src + '/img/sprites/*.png',
+    '!' + dir.src + '/img/_sprite.scss',
+    dir.src + '/img/{,**/}*.{png,jpg,gif}'
+    ])
     .pipe(gulp.dest( dir.dist + '/img/' ));
 });
 
 // 不要なファイルを削除する
 // distフォルダ内を一度全て削除する
-gulp.task('clean-dist', function () {
-  gulp.src([
-    dir.dist + '/{,**/}*'
-    ], {read: false} )
-  .pipe(clean());
+gulp.task('clean-dist', function (cb) {
+  del([
+    dir.dist + '/**'
+  ], cb);
 });
 
-// スプライト画像の生成データを全て削除する
-gulp.task('clean-sprite', function () {
-  gulp.src( [
-    dir.dist + '/{,**/}sprite-*.png', // 乱数付きのスプライト画像
-    dir.dist + '/{,**/}sprite' // スプライト画像生成フォルダ
-  ], {read: false} )
-    .pipe(clean());
-});
 
 // 画像を圧縮
 gulp.task('imagemin', function () {
@@ -153,8 +149,11 @@ gulp.task('watch', function() {
 // 開発用
 gulp.task('serve', [
   'connect',
-  'copy',
+  'ect',
   'sprite',
+  'compass',
+  'typescript',
+  'copy',
   'watch'
 ]);
 

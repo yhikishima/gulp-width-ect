@@ -4,16 +4,17 @@
   "description": "",
   "main": "gulpfile.js",
   "dependencies": {
+    "del": "^1.1.1",
     "gulp": "^3.8.10",
+    "gulp-clean": "^0.3.1",
     "gulp-compass": "^2.0.3",
     "gulp-connect": "^2.2.0",
+    "gulp-imagemin": "^2.0.0",
     "gulp-load-plugins": "^0.8.0",
     "gulp-plumber": "^0.6.6",
-    "gulp-clean": "^0.3.1",
-    "gulp-imagemin": "^2.0.0",
-    "run-sequence": "^1.0.2",
     "gulp-watch": "^3.0.0",
-    "imagemin-pngquant": "^4.0.0"
+    "imagemin-pngquant": "^4.0.0",
+    "run-sequence": "^1.0.2"
   },
   "devDependencies": {
     "coffee-script": "^1.8.0",
