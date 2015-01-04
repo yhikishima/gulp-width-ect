@@ -1,5 +1,7 @@
 <%# ページ個別の設定 %>
 <% block 'title': %>index<% end %>
+<% block 'css': %><link rel="stylesheet" href="<%= @basepath %>css/top.css"><% end %>
+<% block 'scripts': %><script src="<%= @basepath %>js/sub/top.js"></script><% end %>
 <%# /ページ個別の設定 %>
 
 <% extend 'layouts/layout' %>
