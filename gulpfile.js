@@ -15,6 +15,7 @@ var plumber = require('gulp-plumber');
 var spritesmith = require("gulp.spritesmith");
 var typescript = require('gulp-tsc');
 var del = require('del');
+var browserify = require ('browserify');
 
 var dir = {
   src: 'src',
