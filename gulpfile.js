@@ -16,6 +16,7 @@ var spritesmith = require("gulp.spritesmith");
 var typescript = require('gulp-tsc');
 var del = require('del');
 var browserify = require ('browserify');
+var karma = require('karma').server;
 
 var dir = {
   src: 'src',
@@ -124,6 +125,14 @@ gulp.task('ect', function(){
       });
     }}))
   .pipe(gulp.dest(dir.dist));
+});
+
+// テストの実行
+gulp.task('test', function (done) {
+  karma.start({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done);
 });
 
 // ファイル更新監視
